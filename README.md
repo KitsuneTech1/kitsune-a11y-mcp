@@ -69,4 +69,4 @@ KITSUNE   no skip link near top of page
 
 ## License
 
-MIT.
+PolyForm Noncommercial 1.0.0 - free for personal and other noncommercial use. Commercial use requires a license from Kitsune Technologies (Support@kitsunetechnologies.org). See [LICENSE](LICENSE).
