@@ -69,4 +69,4 @@ KITSUNE   no skip link near top of page
 
 ## License
 
-PolyForm Noncommercial 1.0.0 - free for personal and other noncommercial use. Commercial use requires a license from Kitsune Technologies (Support@kitsunetechnologies.org). See [LICENSE](LICENSE).
+PolyForm Small Business License 1.0.0. Copyright (c) 2026 Kitsune Technologies LLC. Free to use, modify, and share if you are an individual or a company with fewer than 100 people and under 1,000,000 USD in annual revenue. Larger organizations need a commercial license, contact Support@kitsunetechnologies.org. Full text in [LICENSE](LICENSE).
