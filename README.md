@@ -69,4 +69,4 @@ KITSUNE   no skip link near top of page
 
 ## License
 
-PolyForm Small Business License 1.0.0. Copyright (c) 2026 Kitsune Technologies LLC. Free to use, modify, and share if you are an individual or a company with fewer than 100 people and under 1,000,000 USD in annual revenue. Larger organizations need a commercial license, contact Support@kitsunetechnologies.org. Full text in [LICENSE](LICENSE).
+MIT. Copyright (c) 2026 Kitsune Technologies LLC. Do what you like with it, commercially or otherwise, just keep the copyright notice. Full text in [LICENSE](LICENSE).
