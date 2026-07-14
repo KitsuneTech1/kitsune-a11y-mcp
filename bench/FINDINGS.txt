@@ -1,0 +1,103 @@
+ENGINE: axe-core 4.12.1, tags = the exact set kitsune-a11y-mcp/server.mjs runs
+CORPUS: W3C ACT Rules test suite, 1188 cases / 87 official rules
+LOADED: 1170 ok, 18 failed to load
+
+==============================================================================
+1. COVERAGE  (does the engine even TRY the rule?)
+==============================================================================
+  ACT rules axe-core implements : 50/87  (57.5%)
+  ACT rules with NO check at all: 37/87  (42.5%)
+
+==============================================================================
+2. DETECTION on the 382 pages W3C labels as REAL FAILURES
+==============================================================================
+  Across ALL 87 rules   -> caught 172, missed 209   RECALL 45.1%   <-- the honest headline
+  Only the 50 implemented -> caught 172, missed 72   RECALL 70.5%
+
+==============================================================================
+3. FALSE POSITIVES on the pages W3C labels CLEAN (passed / inapplicable)
+==============================================================================
+  Wrongly flagged: 5 of 789   FP RATE 0.6%
+  Precision (of everything it flagged, how much was real): 97.2%
+
+==============================================================================
+4. THE 37 ACT RULES THIS TOOL CANNOT SEE AT ALL
+==============================================================================
+  [ 8 known failures missed]  Links with identical accessible names and same context serve equivalent purpose
+  [ 6 known failures missed]  Form field label is descriptive
+  [ 6 known failures missed]  Link in context is descriptive
+  [ 5 known failures missed]  HTML images contain no text
+  [ 5 known failures missed]  ARIA global properties not used where prohibited
+  [ 5 known failures missed]  Audio or video element that plays automatically has a control mechanism
+  [ 5 known failures missed]  Focusable element has no keyboard trap
+  [ 5 known failures missed]  HTML page language subtag matches default language
+  [ 5 known failures missed]  Image not in the accessibility tree is decorative
+  [ 5 known failures missed]  Error message describes invalid form field value
+  [ 5 known failures missed]  Link is descriptive
+  [ 5 known failures missed]  Zoomed text node is not clipped with CSS overflow
+  [ 4 known failures missed]  HTML element language subtag matches language
+  [ 4 known failures missed]  Heading is descriptive
+  [ 4 known failures missed]  Content has alternative for visual reference
+  [ 4 known failures missed]  Video element visual content has accessible alternative
+  [ 4 known failures missed]  Video element content is media alternative for text
+  [ 4 known failures missed]  Video element auditory content has captions
+  [ 4 known failures missed]  Video element visual-only content has accessible alternative
+  [ 4 known failures missed]  Video element visual-only content is media alternative for text
+  [ 4 known failures missed]  Audio and visuals of video element have transcript
+  [ 3 known failures missed]  HTML page title is descriptive
+  [ 3 known failures missed]  Image accessible name is descriptive
+  [ 3 known failures missed]  Summary element has non-empty accessible name
+  [ 3 known failures missed]  Focusable element has no keyboard trap via non-standard navigation
+  [ 3 known failures missed]  Focusable element has no keyboard trap via standard navigation
+  [ 3 known failures missed]  Video element visual content has audio description
+  [ 3 known failures missed]  Video element visual-only content has transcript
+  [ 3 known failures missed]  Video element visual content has strict accessible alternative
+  [ 2 known failures missed]  Audio element content has text alternative
+  [ 2 known failures missed]  Audio or video element that plays automatically has no audio that lasts more than 3 seconds
+  [ 2 known failures missed]  No keyboard shortcut uses only printable characters
+  [ 2 known failures missed]  Video element visual-only content has audio track alternative
+  [ 1 known failures missed]  Element in sequential focus order has visible focus
+  [ 1 known failures missed]  Text content that changes automatically can be paused, stopped or hidden
+  [ 1 known failures missed]  Device motion based changes to the content can be disabled
+  [ 1 known failures missed]  Device motion based changes to the content can also be created from the user interface
+
+==============================================================================
+5. WORST IMPLEMENTED RULES (it tries, and still misses)
+==============================================================================
+  missed 12/13  Text has enhanced contrast   [axe: color-contrast-enhanced, color-contrast]
+  missed  6/ 6  Audio element content has transcript   [axe: audio-caption]
+  missed  6/ 6  Links with identical accessible names have equivalent purpose   [axe: identical-links-same-purpose]
+  missed  5/ 5  Visible label is part of accessible name   [axe: label-content-name-mismatch]
+  missed  4/ 4  Orientation of the page is not restricted using CSS transforms   [axe: css-orientation-lock]
+  missed  4/ 4  Audio element content is media alternative for text   [axe: audio-caption]
+  missed  4/ 4  Document has heading for non-repeated content   [axe: bypass]
+  missed  4/ 4  Iframe elements with identical accessible names have equivalent purpose   [axe: frame-title-unique]
+  missed  3/11  Text has minimum contrast   [axe: color-contrast]
+  missed  3/ 3  Block of repeated content is collapsible   [axe: bypass]
+  missed  3/ 3  Document has an instrument to move focus to non-repeated content   [axe: bypass]
+  missed  3/ 3  Document has a landmark with non-repeated content   [axe: bypass]
+  missed  3/ 3  Table header cell has assigned cells   [axe: th-has-data-cells]
+  missed  2/ 7  Meta viewport allows for zoom   [axe: meta-viewport]
+  missed  2/ 3  Meta element has no refresh delay (no exception)   [axe: meta-refresh-no-exceptions, meta-refresh]
+  missed  2/ 2  Audio or video element avoids automatically playing audio   [axe: no-autoplay-audio]
+  missed  2/ 2  Video element auditory content has accessible alternative   [axe: video-caption]
+  missed  1/ 1  Iframe with interactive elements is not excluded from tab-order   [axe: frame-focusable-content]
+  missed  1/ 6  Element with aria-hidden has no content in sequential focus navigation   [axe: aria-hidden-focus]
+  missed  1/10  ARIA required owned elements   [axe: aria-required-children]
+  missed  1/ 1  Bypass Blocks of Repeated Content   [axe: bypass]
+
+==============================================================================
+6. NOISIEST IMPLEMENTED RULES (flags clean pages)
+==============================================================================
+  false-flagged  3/14 clean pages  Important word spacing in style attributes is wide enough   [axe: avoid-inline-spacing]
+  false-flagged  2/14 clean pages  Important letter spacing in style attributes is wide enough   [axe: avoid-inline-spacing]
+
+==============================================================================
+7. THE 5 HAND-WRITTEN 'KITSUNE' CHECKS  (not ACT rules; measured for noise)
+==============================================================================
+  Fired on 789 pages W3C considers CLEAN for the rule under test:
+    no-main-landmark         fired on  770/789 clean pages  (97.6%)
+    no-skip-link             fired on  746/789 clean pages  (94.6%)
+    unlabelled-form-control  fired on   33/789 clean pages  (4.2%)
+    positive-tabindex        fired on    2/789 clean pages  (0.3%)
+  Pages where the label check CRASHED the evaluation: 0

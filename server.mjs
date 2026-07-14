@@ -75,21 +75,49 @@ async function audit({ url, html, best_practices = true }) {
     const extra = await page.evaluate(() => {
       const problems = [];
       if (!document.querySelector("main, [role=main]")) problems.push("no <main> landmark");
-      const firstLinks = [...document.querySelectorAll("a")].slice(0, 3);
-      if (!firstLinks.some(a => (a.getAttribute("href") || "").startsWith("#"))) problems.push("no skip link near top of page");
+
+      // A skip link has to be early in the TAB ORDER, not literally the first <a> in the DOM.
+      // A normal header is logo link, a couple of nav links, then the skip link. Look at the
+      // first handful of links and require the target to actually exist on the page.
+      const links = [...document.querySelectorAll("a[href]")].slice(0, 6);
+      const isSkip = (a) => {
+        const href = a.getAttribute("href") || "";
+        if (!href.startsWith("#") || href === "#") return false;
+        try { return !!document.getElementById(decodeURIComponent(href.slice(1))); } catch { return false; }
+      };
+      if (!links.some(isSkip)) problems.push("no skip link near top of page");
+
       const animated = [...document.querySelectorAll("*")].filter(el => {
         const s = getComputedStyle(el);
         return s.animationName !== "none" && parseFloat(s.animationDuration) > 5 && s.animationIterationCount === "infinite";
       });
       if (animated.length) {
-        const hasPause = !!document.querySelector("button[aria-pressed], [aria-label*='ause']");
+        // A pause control is a button whose NAME says pause/stop, however that name is supplied.
+        // The old selector only matched aria-pressed or an aria-label, so a plain
+        // <button>Pause</button> (the most common form there is) was never found.
+        const controls = [...document.querySelectorAll("button, [role=button], input[type=button], input[type=submit], a[href]")];
+        const nameOf = (el) => [el.getAttribute("aria-label"), el.getAttribute("title"), el.value, el.textContent].filter(Boolean).join(" ");
+        const hasPause = controls.some(el => /\b(pause|stop|freeze|disable animation)\b/i.test(nameOf(el)));
         if (!hasPause) problems.push(`${animated.length} infinite animation(s) longer than 5s with no visible pause control (WCAG 2.2.2)`);
       }
-      document.querySelectorAll("input:not([type=hidden]), textarea, select").forEach(el => {
-        const id = el.id;
-        const labelled = (id && document.querySelector(`label[for='${id}']`)) || el.getAttribute("aria-label") || el.getAttribute("aria-labelledby") || el.closest("label");
+
+      // Buttons carry their own name (value / alt), and WCAG does not want a <label> on them.
+      // Flagging them produced a fake violation on every form that has a submit button.
+      const NO_LABEL_NEEDED = new Set(["hidden", "submit", "button", "reset", "image"]);
+      document.querySelectorAll("input, textarea, select").forEach(el => {
+        if (el.tagName === "INPUT" && NO_LABEL_NEEDED.has((el.type || "").toLowerCase())) return;
+        if (el.closest("[aria-hidden=true]") || el.hidden) return;
+        // el.labels is the native association. It needs no CSS selector, so an id like
+        // "user.email" or "a'b" can no longer throw and take the whole audit down with it.
+        const labelled =
+          (el.labels && el.labels.length > 0) ||
+          el.getAttribute("aria-label") ||
+          el.getAttribute("aria-labelledby") ||
+          el.closest("label") ||
+          (el.getAttribute("title") || "").trim();
         if (!labelled) problems.push(`unlabelled form control: ${el.outerHTML.slice(0, 80)}`);
       });
+
       document.querySelectorAll("[tabindex]").forEach(el => {
         if (parseInt(el.getAttribute("tabindex"), 10) > 0) problems.push(`positive tabindex on ${el.tagName.toLowerCase()}`);
       });

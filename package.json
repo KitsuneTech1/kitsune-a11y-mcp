@@ -4,9 +4,12 @@
   "private": true,
   "type": "module",
   "description": "MCP server: WCAG 2.2 audits (axe-core in a real browser) plus the Kitsune above-the-law checklist",
-  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
   "dependencies": {
     "axe-core": "^4.10.0",
     "playwright-core": "^1.48.0"
-  }
+  },
+  "devDependencies": {}
 }
