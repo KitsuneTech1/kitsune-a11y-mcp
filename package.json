@@ -12,5 +12,5 @@
     "playwright-core": "^1.48.0"
   },
   "devDependencies": {},
-  "license": "AGPL-3.0-only"
+  "license": "MIT"
 }
